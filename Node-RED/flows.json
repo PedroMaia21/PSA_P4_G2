@@ -1,0 +1,2353 @@
+[
+    {
+        "id": "07325b9e7e40e233",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ee140812e1840404",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d1055e8eddf3915b",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "193.137.172.20",
+        "port": "85",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1d4248171caa786d",
+        "type": "modbus-client",
+        "name": "",
+        "clienttype": "serial",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": true,
+        "tcpHost": "127.0.0.1",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB0",
+        "serialType": "ASCII",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "even",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "100000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "20",
+        "parallelUnitIdsAllowed": true,
+        "showErrors": false,
+        "showWarnings": true,
+        "showLogs": true
+    },
+    {
+        "id": "ec44ef2c36e5f5b8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "193.137.172.20",
+        "port": "85",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "5cc0dcda4177270c",
+        "type": "websocket-listener",
+        "path": "/ws/PSA24G2",
+        "wholemsg": "false"
+    },
+    {
+        "id": "266a475069988460",
+        "type": "websocket-listener",
+        "path": "/ws/PSA24G2/lastPos",
+        "wholemsg": "false"
+    },
+    {
+        "id": "4ec387cfa61e888b",
+        "type": "websocket-listener",
+        "path": "/ws/PSA24G2/hist",
+        "wholemsg": "false"
+    },
+    {
+        "id": "7de4fd8a3f147383",
+        "type": "websocket-listener",
+        "path": "/ws/PSA24G2/points",
+        "wholemsg": "false"
+    },
+    {
+        "id": "30891fbc3dace4a6",
+        "type": "websocket-listener",
+        "path": "/ws/PSA24G2/request",
+        "wholemsg": "false"
+    },
+    {
+        "id": "8f6acc804dfd2635",
+        "type": "websocket-listener",
+        "path": "/ws/PSA24G2/histReq",
+        "wholemsg": "false"
+    },
+    {
+        "id": "2135c73bdf96afac",
+        "type": "websocket-listener",
+        "path": "/ws/PSA24G2/state",
+        "wholemsg": "false"
+    },
+    {
+        "id": "74f79175e2e2e8bc",
+        "type": "websocket-listener",
+        "path": "/ws/PSA24G2/error",
+        "wholemsg": "false"
+    },
+    {
+        "id": "3f6dc85fcc3ec21d",
+        "type": "MySQLdatabase",
+        "name": "LSFPdataBase",
+        "host": "193.137.172.20",
+        "port": "87",
+        "db": "psa24g2",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "a3597eb3e1b4f9ef",
+        "type": "mqtt in",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "topic": "PSA24G2_xCommand",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "d1055e8eddf3915b",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 120,
+        "wires": [
+            [
+                "202d303be3ea3219"
+            ]
+        ]
+    },
+    {
+        "id": "202d303be3ea3219",
+        "type": "function",
+        "z": "07325b9e7e40e233",
+        "name": "Separação",
+        "func": "var comando=msg.payload\n\nvar modeIndex=comando.indexOf(\"M\")\nvar xIndex = comando.indexOf(\"X\")\n\nvar mode=Number(comando.charAt(modeIndex+1))\nvar x=Number(comando.slice(xIndex+1))\nif(x<0){x=x+65536}\n\nmsg.modo=mode\nmsg.payload=x\nmsg.complete=1\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 120,
+        "wires": [
+            [
+                "b7705dfe605f9770",
+                "dcf7d33f969af65d",
+                "4b14e0c9f5f2305b"
+            ]
+        ]
+    },
+    {
+        "id": "23b6c8fb20347695",
+        "type": "switch",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "property": "modo",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 850,
+        "y": 100,
+        "wires": [
+            [
+                "352305ea3c598231",
+                "d93581ee0fe2cf58"
+            ],
+            [
+                "352305ea3c598231",
+                "ab15f3c86cf572c4"
+            ]
+        ]
+    },
+    {
+        "id": "12c085783bd4d5f6",
+        "type": "modbus-write",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "2088",
+        "quantity": "1",
+        "server": "1d4248171caa786d",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 1240,
+        "y": 40,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "2feee32ee23a5b29",
+        "type": "modbus-write",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "2099",
+        "quantity": "1",
+        "server": "1d4248171caa786d",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 1320,
+        "y": 220,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b7705dfe605f9770",
+        "type": "change",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "1",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 120,
+        "wires": [
+            [
+                "23b6c8fb20347695"
+            ]
+        ]
+    },
+    {
+        "id": "dcf7d33f969af65d",
+        "type": "modbus-write",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "",
+        "dataType": "HoldingRegister",
+        "adr": "6020",
+        "quantity": "1",
+        "server": "1d4248171caa786d",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 640,
+        "y": 240,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "e46a7f67c60e0a04",
+        "type": "modbus-read",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "topic": "",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "",
+        "dataType": "HoldingRegister",
+        "adr": "4096",
+        "quantity": "1",
+        "rate": "500",
+        "rateUnit": "ms",
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "server": "1d4248171caa786d",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 530,
+        "y": 700,
+        "wires": [
+            [
+                "2d29dc9e27fc89bc"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "f745d5b7bb3de56f",
+        "type": "function",
+        "z": "07325b9e7e40e233",
+        "name": "function 1",
+        "func": "var xtodos=msg.x\n\nvar x=xtodos[xtodos.length-1][0]\n\nif(x>32767){x=x-65536}\nmsg.payload=x\nmsg.topic = \"posição\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1300,
+        "y": 500,
+        "wires": [
+            [
+                "309e8de093fb637f",
+                "91b08dc338742319"
+            ]
+        ]
+    },
+    {
+        "id": "5302e444a5f44043",
+        "type": "join",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "x",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1070,
+        "y": 540,
+        "wires": [
+            [
+                "f745d5b7bb3de56f"
+            ]
+        ]
+    },
+    {
+        "id": "bec64938d55431cc",
+        "type": "trigger",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "op1": "",
+        "op2": "0",
+        "op1type": "pay",
+        "op2type": "str",
+        "duration": "-1",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 540,
+        "y": 520,
+        "wires": [
+            [
+                "5302e444a5f44043",
+                "ce367e9f203fb438"
+            ]
+        ]
+    },
+    {
+        "id": "2d29dc9e27fc89bc",
+        "type": "change",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "x",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 680,
+        "y": 620,
+        "wires": [
+            [
+                "5302e444a5f44043"
+            ]
+        ]
+    },
+    {
+        "id": "56f5164d98aa20e1",
+        "type": "modbus-read",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "topic": "",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "2077",
+        "quantity": "1",
+        "rate": "500",
+        "rateUnit": "ms",
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "server": "1d4248171caa786d",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 550,
+        "y": 420,
+        "wires": [
+            [
+                "c434180b3c29d172"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "ce367e9f203fb438",
+        "type": "join",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "c",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 910,
+        "y": 320,
+        "wires": [
+            [
+                "7094117e93c130ab"
+            ]
+        ]
+    },
+    {
+        "id": "c434180b3c29d172",
+        "type": "change",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "c",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 700,
+        "y": 320,
+        "wires": [
+            [
+                "ce367e9f203fb438"
+            ]
+        ]
+    },
+    {
+        "id": "7094117e93c130ab",
+        "type": "function",
+        "z": "07325b9e7e40e233",
+        "name": "function 2",
+        "func": "var concluido=msg.c\n\nvar c=concluido[concluido.length-1][0]\nmsg.payload=c\nmsg.topic=\"estado\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1100,
+        "y": 340,
+        "wires": [
+            [
+                "ef348aa3b30c5110"
+            ]
+        ]
+    },
+    {
+        "id": "ef348aa3b30c5110",
+        "type": "switch",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1250,
+        "y": 360,
+        "wires": [
+            [
+                "309e8de093fb637f"
+            ],
+            [
+                "64395e0292e44a17",
+                "309e8de093fb637f"
+            ]
+        ]
+    },
+    {
+        "id": "64395e0292e44a17",
+        "type": "change",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "reset",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1640,
+        "y": 560,
+        "wires": [
+            [
+                "41af4805e5351a87"
+            ]
+        ]
+    },
+    {
+        "id": "41af4805e5351a87",
+        "type": "link out",
+        "z": "07325b9e7e40e233",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "33100e26668bbd66"
+        ],
+        "x": 1815,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "33100e26668bbd66",
+        "type": "link in",
+        "z": "07325b9e7e40e233",
+        "name": "link in 1",
+        "links": [
+            "41af4805e5351a87"
+        ],
+        "x": 335,
+        "y": 540,
+        "wires": [
+            [
+                "bec64938d55431cc"
+            ]
+        ]
+    },
+    {
+        "id": "309e8de093fb637f",
+        "type": "join",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1910,
+        "y": 500,
+        "wires": [
+            [
+                "f15b95c3f0fed92d"
+            ]
+        ]
+    },
+    {
+        "id": "f15b95c3f0fed92d",
+        "type": "function",
+        "z": "07325b9e7e40e233",
+        "name": "function 3",
+        "func": "var posicao=msg.payload[\"posição\"]\nvar estado=msg.payload[\"estado\"]\n\nif(estado==true){\n    estado=1\n} else if(estado==false){\n    estado=0\n}\nelse{\n    estado=2\n}\nmsg.payload=\"C\"+estado+\"X\"+posicao\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2060,
+        "y": 560,
+        "wires": [
+            [
+                "a6db0e7f338904ad"
+            ]
+        ]
+    },
+    {
+        "id": "a6db0e7f338904ad",
+        "type": "mqtt out",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "topic": "PSA24G2_xFeedback",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d1055e8eddf3915b",
+        "x": 2320,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "55698e3f11552191",
+        "type": "modbus-write",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "2077",
+        "quantity": "1",
+        "server": "1d4248171caa786d",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 1520,
+        "y": 120,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "352305ea3c598231",
+        "type": "change",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "0",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1280,
+        "y": 120,
+        "wires": [
+            [
+                "55698e3f11552191",
+                "c95dbf5180dfe95f"
+            ]
+        ]
+    },
+    {
+        "id": "4b14e0c9f5f2305b",
+        "type": "delay",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "3",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 380,
+        "wires": [
+            [
+                "bec64938d55431cc"
+            ]
+        ]
+    },
+    {
+        "id": "d93581ee0fe2cf58",
+        "type": "delay",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1020,
+        "y": 80,
+        "wires": [
+            [
+                "12c085783bd4d5f6"
+            ]
+        ]
+    },
+    {
+        "id": "ab15f3c86cf572c4",
+        "type": "delay",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1020,
+        "y": 200,
+        "wires": [
+            [
+                "2feee32ee23a5b29"
+            ]
+        ]
+    },
+    {
+        "id": "c95dbf5180dfe95f",
+        "type": "modbus-write",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "2076",
+        "quantity": "1",
+        "server": "1d4248171caa786d",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 1540,
+        "y": 200,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "162bb50d0b14cdad",
+        "type": "modbus-read",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "topic": "",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "2076",
+        "quantity": "1",
+        "rate": "5000",
+        "rateUnit": "ms",
+        "delayOnStart": false,
+        "startDelayTime": "1",
+        "server": "1d4248171caa786d",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 790,
+        "y": 760,
+        "wires": [
+            [
+                "7599ae83875eb316"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "7599ae83875eb316",
+        "type": "change",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "c",
+                "pt": "msg",
+                "to": "2",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1100,
+        "y": 740,
+        "wires": [
+            [
+                "021f54786326e29b"
+            ]
+        ]
+    },
+    {
+        "id": "021f54786326e29b",
+        "type": "function",
+        "z": "07325b9e7e40e233",
+        "name": "function 4",
+        "func": "var concluido = msg.payload\n\nvar c = concluido[0]\nif(c){\nmsg.payload = 2\nmsg.topic = \"estado\"\nreturn msg;}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 740,
+        "wires": [
+            [
+                "91b08dc338742319"
+            ]
+        ]
+    },
+    {
+        "id": "91b08dc338742319",
+        "type": "join",
+        "z": "07325b9e7e40e233",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1830,
+        "y": 740,
+        "wires": [
+            [
+                "f0908d81040b9f4c"
+            ]
+        ]
+    },
+    {
+        "id": "f0908d81040b9f4c",
+        "type": "function",
+        "z": "07325b9e7e40e233",
+        "name": "function 5",
+        "func": "var posicao=msg.payload[\"posição\"]\nvar estado=msg.payload[\"estado\"]\n\nmsg.payload=\"C\"+estado+\"X\"+posicao\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2040,
+        "y": 700,
+        "wires": [
+            [
+                "a6db0e7f338904ad"
+            ]
+        ]
+    },
+    {
+        "id": "92815eb57dde0c0d",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Data Separation",
+        "func": "var incomingMsg ={payload: msg.payload}\n\nvar str = incomingMsg.payload\n\nvar modeIndex = str.indexOf(\"M\")\nvar xiIndex = str.indexOf(\"XI\")\nvar xfIndex = str.indexOf(\"XF\")\nvar yiIndex = str.indexOf(\"YI\")\nvar yfIndex = str.indexOf(\"YF\")\nvar ziIndex = str.indexOf(\"ZI\")\nvar zfIndex = str.indexOf(\"ZF\")\nvar nIndex = str.indexOf(\"N\")\n\nvar mode = Number(str.charAt(modeIndex+1))\n\nvar xi = str.slice(xiIndex+2,yiIndex)\nvar xf = str.slice(xfIndex+2,yfIndex)\n\nvar yi = str.slice(yiIndex+2,ziIndex)\nvar yf = str.slice(yfIndex+2,zfIndex)\n\nvar zi = str.slice(ziIndex+2,xfIndex)\nvar zf = str.slice(zfIndex+2,nIndex)\n\nvar number = Number(str.slice(nIndex+1,nIndex+3))\n\nvar outgoingMsg = {payload: []}\nif (mode == 0) {\n   outgoingMsg = {payload: [mode], wmode: mode, point: 0}\n} else if (mode == 1){\n   outgoingMsg = {payload: [mode, xi, yi,zi], wmode:mode, point:1}\n} else {\n   outgoingMsg = { payload:[mode, xi, yi, zi, xf, yf, zf, number], wmode: mode, point:1, numberC: 0, numberD: number}\n}\n\nreturn [outgoingMsg]",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 320,
+        "wires": [
+            [
+                "9146e76359a25a05",
+                "14ebb1ee2ecb6555"
+            ]
+        ]
+    },
+    {
+        "id": "9146e76359a25a05",
+        "type": "switch",
+        "z": "ee140812e1840404",
+        "name": "",
+        "property": "wmode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 970,
+        "y": 320,
+        "wires": [
+            [
+                "69af60e199f20d8a",
+                "50bcca55d452973c"
+            ],
+            [
+                "6e98a03c41f9ca64",
+                "50bcca55d452973c"
+            ],
+            [
+                "67c392014e9d2df2",
+                "50bcca55d452973c",
+                "d73f5734bbb4f81d"
+            ]
+        ]
+    },
+    {
+        "id": "69af60e199f20d8a",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Send to Zero",
+        "func": "msg.payload=\"M0X+0000\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1330,
+        "y": 240,
+        "wires": [
+            [
+                "baca5aba70ce7998"
+            ]
+        ]
+    },
+    {
+        "id": "6e98a03c41f9ca64",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Send to Position",
+        "func": "var incomingMsg=msg.payload;\n\nvar mode = \"M1\";\nvar xPos = incomingMsg[1];\n\nmsg.payload=mode+\"X\"+xPos;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1700,
+        "y": 320,
+        "wires": [
+            [
+                "baca5aba70ce7998",
+                "60bbe05d290e286c"
+            ]
+        ]
+    },
+    {
+        "id": "67c392014e9d2df2",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Automatic Mode",
+        "func": "if (msg.point==1){\n    var xPos=msg.payload[1];\n    var yPos=msg.payload[2];\n    var zPos=msg.payload[3];\n}else{\n    var xPos=msg.payload[4];\n    var yPos=msg.payload[5];\n    var zPos=msg.payload[6];\n}\n\nmsg.count=msg.payload[7]\n\nmsg.payload=[1, xPos, yPos, zPos];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 400,
+        "wires": [
+            [
+                "6e98a03c41f9ca64"
+            ]
+        ]
+    },
+    {
+        "id": "baca5aba70ce7998",
+        "type": "mqtt out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_xCommand",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ec44ef2c36e5f5b8",
+        "x": 2100,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "308110f08a6a22f3",
+        "type": "mqtt in",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_xFeedback",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ec44ef2c36e5f5b8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 520,
+        "wires": [
+            [
+                "4e7159163b5267e4"
+            ]
+        ]
+    },
+    {
+        "id": "ef0db383c7be2442",
+        "type": "switch",
+        "z": "ee140812e1840404",
+        "name": "",
+        "property": "concluded",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 690,
+        "y": 520,
+        "wires": [
+            [
+                "3c873591e85de997"
+            ],
+            [
+                "987fb8ddd70e146a",
+                "3c873591e85de997"
+            ],
+            [
+                "3c873591e85de997",
+                "1c0635979ca1f305"
+            ]
+        ]
+    },
+    {
+        "id": "318605a6a89c8e6a",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Send to Position",
+        "func": "var incomingMsg=msg.payload;\n\nvar mode = \"M1\";\nif (msg.point==1){\n    var yPos = incomingMsg[0][2];\n    var zPos = incomingMsg[0][3];\n}else{\n    var yPos = incomingMsg[0][5];\n    var zPos = incomingMsg[0][6];\n}\n\nif (zPos<-7500){yPos=0};\n\nmsg.payload=mode+\"Y\"+yPos+\"Z\"+zPos;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1740,
+        "y": 540,
+        "wires": [
+            [
+                "d9b8fbffe09b2c4c",
+                "ccd817798aa85350"
+            ]
+        ]
+    },
+    {
+        "id": "50bcca55d452973c",
+        "type": "join",
+        "z": "ee140812e1840404",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1350,
+        "y": 520,
+        "wires": [
+            [
+                "c3f524084de47588"
+            ]
+        ]
+    },
+    {
+        "id": "987fb8ddd70e146a",
+        "type": "change",
+        "z": "ee140812e1840404",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "complete",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 930,
+        "y": 520,
+        "wires": [
+            [
+                "50bcca55d452973c"
+            ]
+        ]
+    },
+    {
+        "id": "4e7159163b5267e4",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Get Status",
+        "func": "var str = msg.payload\n\nvar statusIndex = str.indexOf(\"C\")\nvar status = str.charAt(statusIndex + 1)\n\nif (status == 1) {\n    msg.concluded = 1\n} else if (status == 0) {\n    msg.concluded = 0\n} else {\n    msg.concluded = 2\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 520,
+        "wires": [
+            [
+                "ef0db383c7be2442"
+            ]
+        ]
+    },
+    {
+        "id": "d9b8fbffe09b2c4c",
+        "type": "mqtt out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_yzCommand",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ec44ef2c36e5f5b8",
+        "x": 2110,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "701a0ebf89819140",
+        "type": "mqtt in",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_yzFeedback",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ec44ef2c36e5f5b8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 680,
+        "wires": [
+            [
+                "5368f3b9d82ba73f"
+            ]
+        ]
+    },
+    {
+        "id": "5368f3b9d82ba73f",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Get Status",
+        "func": "var str = msg.payload\n\nvar statusIndex = str.indexOf(\"C\")\nvar status = str.charAt(statusIndex + 1)\n\nif (status==1){\n    msg.concluded=1\n} else if (status==0) {\n    msg.concluded=0\n} else {\n    msg.concluded=2\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 680,
+        "wires": [
+            [
+                "d1ee534e3fcf2210"
+            ]
+        ]
+    },
+    {
+        "id": "d1ee534e3fcf2210",
+        "type": "switch",
+        "z": "ee140812e1840404",
+        "name": "",
+        "property": "concluded",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 690,
+        "y": 680,
+        "wires": [
+            [
+                "7f7f19a3f11e8e47"
+            ],
+            [
+                "fc4e75587f092669",
+                "7f7f19a3f11e8e47"
+            ],
+            [
+                "7f7f19a3f11e8e47",
+                "1c0635979ca1f305"
+            ]
+        ]
+    },
+    {
+        "id": "fc4e75587f092669",
+        "type": "change",
+        "z": "ee140812e1840404",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "complete",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 930,
+        "y": 680,
+        "wires": [
+            [
+                "d73f5734bbb4f81d"
+            ]
+        ]
+    },
+    {
+        "id": "d73f5734bbb4f81d",
+        "type": "join",
+        "z": "ee140812e1840404",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1130,
+        "y": 680,
+        "wires": [
+            [
+                "9a6bf4a574a5d51a"
+            ]
+        ]
+    },
+    {
+        "id": "9a6bf4a574a5d51a",
+        "type": "switch",
+        "z": "ee140812e1840404",
+        "name": "",
+        "property": "wmode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            },
+            {
+                "t": "neq",
+                "v": "2",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1290,
+        "y": 680,
+        "wires": [
+            [
+                "3b182e61f86cbd15"
+            ],
+            [
+                "14249c0bd63135cb",
+                "8ef3ea4d039c9877"
+            ]
+        ]
+    },
+    {
+        "id": "3b182e61f86cbd15",
+        "type": "switch",
+        "z": "ee140812e1840404",
+        "name": "",
+        "property": "point",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1450,
+        "y": 660,
+        "wires": [
+            [
+                "0b30c5b9e7cc45ad"
+            ],
+            [
+                "f2dfe6bb165f521a"
+            ]
+        ]
+    },
+    {
+        "id": "0b30c5b9e7cc45ad",
+        "type": "change",
+        "z": "ee140812e1840404",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "point",
+                "pt": "msg",
+                "to": "2",
+                "tot": "num"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0]",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1820,
+        "y": 640,
+        "wires": [
+            [
+                "ee0a1b2fd5ea3434"
+            ]
+        ]
+    },
+    {
+        "id": "c3f524084de47588",
+        "type": "switch",
+        "z": "ee140812e1840404",
+        "name": "",
+        "property": "wmode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 1490,
+        "y": 520,
+        "wires": [
+            [
+                "e36bcdbbcf15d6f6"
+            ],
+            [
+                "318605a6a89c8e6a"
+            ],
+            [
+                "318605a6a89c8e6a"
+            ]
+        ]
+    },
+    {
+        "id": "e36bcdbbcf15d6f6",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Send to Zero",
+        "func": "msg.payload=\"M0Y+0000Z+0000\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1750,
+        "y": 480,
+        "wires": [
+            [
+                "d9b8fbffe09b2c4c"
+            ]
+        ]
+    },
+    {
+        "id": "f2dfe6bb165f521a",
+        "type": "change",
+        "z": "ee140812e1840404",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "numberC",
+                "pt": "msg",
+                "to": "msg.numberC + 1",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1650,
+        "y": 700,
+        "wires": [
+            [
+                "d1f413ef60ee0643"
+            ]
+        ]
+    },
+    {
+        "id": "d1f413ef60ee0643",
+        "type": "switch",
+        "z": "ee140812e1840404",
+        "name": "",
+        "property": "numberC",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "numberD",
+                "vt": "msg"
+            },
+            {
+                "t": "gte",
+                "v": "numberD",
+                "vt": "msg"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1850,
+        "y": 720,
+        "wires": [
+            [
+                "9bb1b4acf57ca510"
+            ],
+            [
+                "14249c0bd63135cb",
+                "8ef3ea4d039c9877"
+            ]
+        ]
+    },
+    {
+        "id": "9bb1b4acf57ca510",
+        "type": "change",
+        "z": "ee140812e1840404",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "point",
+                "pt": "msg",
+                "to": "1",
+                "tot": "num"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0]",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2040,
+        "y": 680,
+        "wires": [
+            [
+                "ee0a1b2fd5ea3434"
+            ]
+        ]
+    },
+    {
+        "id": "243182724decdea4",
+        "type": "link in",
+        "z": "ee140812e1840404",
+        "name": "link in 1",
+        "links": [
+            "ee0a1b2fd5ea3434"
+        ],
+        "x": 675,
+        "y": 400,
+        "wires": [
+            [
+                "9146e76359a25a05"
+            ]
+        ]
+    },
+    {
+        "id": "ee0a1b2fd5ea3434",
+        "type": "link out",
+        "z": "ee140812e1840404",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "243182724decdea4"
+        ],
+        "x": 2205,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "14ebb1ee2ecb6555",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Insert Into",
+        "func": "var query\n\nswitch (msg.wmode){\n    case 0 :\n        query = \"INSERT INTO request (mode,X1,Y1,Z1) VALUES ('Zero',0000,0000,0000);\"\n        break\n    case 1:\n        var x=msg.payload[1]\n        var y=msg.payload[2]\n        var z=msg.payload[3]\n        query =\"INSERT INTO request (mode,X1,Y1,Z1) VALUES ('Position',\"+x+\",\"+y+\",\"+z+\");\"\n        break\n    case 2:\n        var xi=msg.payload[1]\n        var yi=msg.payload[2]\n        var zi=msg.payload[3]\n        var xf=msg.payload[4]\n        var yf=msg.payload[5]\n        var zf=msg.payload[6]\n        var n=msg.payload[7]\n        query = \"INSERT INTO request (mode,X1,Y1,Z1,X2,Y2,Z2,cicles) VALUES ('Auto',\"+xi+\",\"+yi+\",\"+zi+\",\"+xf+\",\"+yf+\",\"+zf+\",\"+n+\");\"\n        break\n}\n\nmsg.topic=query;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 220,
+        "wires": [
+            [
+                "09fe1386897a45ea"
+            ]
+        ]
+    },
+    {
+        "id": "3c873591e85de997",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Insert Into",
+        "func": "var str=msg.payload\nvar query\n\nvar xIndex = str.indexOf(\"X\")\nvar x = str.slice(xIndex + 1, xIndex + 20)\n\nquery = \"INSERT INTO positionX (X) VALUES (\"+x+\");\"\n\nmsg.topic=query;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 440,
+        "wires": [
+            [
+                "4df02f0f48159815"
+            ]
+        ]
+    },
+    {
+        "id": "7f7f19a3f11e8e47",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Insert Into",
+        "func": "var str=msg.payload\nvar query\n\nvar yIndex = str.indexOf(\"Y\")\nvar zIndex = str.indexOf(\"Z\")\nvar y = str.slice(yIndex +1, zIndex)\nvar z = str.slice(zIndex +1, zIndex+20)\n\nquery = \"INSERT INTO positionYZ (Y,Z) VALUES (\"+y+\",\"+z+\");\"\n\nmsg.topic=query;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 620,
+        "wires": [
+            [
+                "da40df4c9f5d9e23"
+            ]
+        ]
+    },
+    {
+        "id": "14249c0bd63135cb",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Update",
+        "func": "var query\n\nquery = \"UPDATE request SET state = 1 ORDER BY ID DESC LIMIT 1;\"\n\nmsg.topic=query;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2020,
+        "y": 740,
+        "wires": [
+            [
+                "e20f89d9ed8cc61c"
+            ]
+        ]
+    },
+    {
+        "id": "0ea0fe8cf5a49a86",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Select Last Pos",
+        "func": "var query\n\nquery = \"SELECT (SELECT X FROM positionx ORDER BY ID DESC LIMIT 1) AS X, (SELECT Y FROM positionyz ORDER BY ID DESC LIMIT 1) AS Y, (SELECT Z FROM positionyz ORDER BY ID DESC LIMIT 1) AS Z; \"\n\nmsg.topic=query\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 820,
+        "wires": [
+            [
+                "f5691f17a3a18833"
+            ]
+        ]
+    },
+    {
+        "id": "80aa9bc2d72d7c2c",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Select N Req",
+        "func": "var query\nif (!isNaN(msg.payload)){\n    var n=msg.payload\n    n=(n-1)*10\n}else{\n    n=0\n}\n\nquery = \"SELECT ID, time_r, mode, state, time_c FROM request ORDER BY ID DESC LIMIT 10 OFFSET \"+n+\"; \"\n\nmsg.topic=query\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 900,
+        "wires": [
+            [
+                "dc025423923c9484"
+            ]
+        ]
+    },
+    {
+        "id": "74909801ec6ba2ad",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Select ID N - X",
+        "func": "var query\nvar id=msg.payload;\n\nquery = \"SELECT request.mode, request.time_r, positionx.X, positionx.time_p AS timeX FROM request LEFT JOIN positionx ON request.ID = positionx.request_id WHERE request.ID = \"+id+\" ORDER BY timeX ASC\"\n\nmsg.topic=query\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 980,
+        "wires": [
+            [
+                "adacf3c167d4ef52"
+            ]
+        ]
+    },
+    {
+        "id": "516a62980a638b9a",
+        "type": "function",
+        "z": "ee140812e1840404",
+        "name": "Select ID N - YZ",
+        "func": "var query\nvar id=msg.payload;\n\nquery = \"SELECT request.mode, request.time_r, positionyz.Y, positionyz.Z, positionyz.time_p AS timeYZ FROM request LEFT JOIN positionyz ON request.ID = positionyz.request_id WHERE request.ID = \"+id+\" ORDER BY timeYZ ASC\"\n\nmsg.topic=query\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 1040,
+        "wires": [
+            [
+                "34c0c7804318f939"
+            ]
+        ]
+    },
+    {
+        "id": "34c0c7804318f939",
+        "type": "delay",
+        "z": "ee140812e1840404",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 560,
+        "y": 1040,
+        "wires": [
+            [
+                "adacf3c167d4ef52"
+            ]
+        ]
+    },
+    {
+        "id": "7e801c7768d2b102",
+        "type": "join",
+        "z": "ee140812e1840404",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 890,
+        "y": 980,
+        "wires": [
+            [
+                "0b7d75443aa13060"
+            ]
+        ]
+    },
+    {
+        "id": "8a9f93049cc505b7",
+        "type": "websocket in",
+        "z": "ee140812e1840404",
+        "name": "",
+        "server": "5cc0dcda4177270c",
+        "client": "",
+        "x": 130,
+        "y": 820,
+        "wires": [
+            [
+                "0ea0fe8cf5a49a86"
+            ]
+        ]
+    },
+    {
+        "id": "fbb463fcb4be87f5",
+        "type": "websocket out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "server": "266a475069988460",
+        "client": "",
+        "x": 480,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "151bb1ad86463dee",
+        "type": "websocket out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "server": "4ec387cfa61e888b",
+        "client": "",
+        "x": 480,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "50d6ff8593eeba8b",
+        "type": "websocket in",
+        "z": "ee140812e1840404",
+        "name": "",
+        "server": "7de4fd8a3f147383",
+        "client": "",
+        "x": 150,
+        "y": 1000,
+        "wires": [
+            [
+                "74909801ec6ba2ad",
+                "516a62980a638b9a"
+            ]
+        ]
+    },
+    {
+        "id": "27bf97734351b123",
+        "type": "websocket out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "server": "7de4fd8a3f147383",
+        "client": "",
+        "x": 470,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "9d83baa5068d5b65",
+        "type": "websocket in",
+        "z": "ee140812e1840404",
+        "name": "",
+        "server": "30891fbc3dace4a6",
+        "client": "",
+        "x": 150,
+        "y": 320,
+        "wires": [
+            [
+                "92815eb57dde0c0d",
+                "f2a1acf19478c020"
+            ]
+        ]
+    },
+    {
+        "id": "c185fa4c47efbbcc",
+        "type": "websocket in",
+        "z": "ee140812e1840404",
+        "name": "",
+        "server": "8f6acc804dfd2635",
+        "client": "",
+        "x": 150,
+        "y": 900,
+        "wires": [
+            [
+                "80aa9bc2d72d7c2c"
+            ]
+        ]
+    },
+    {
+        "id": "8ef3ea4d039c9877",
+        "type": "websocket out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "server": "2135c73bdf96afac",
+        "client": "",
+        "x": 2070,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "383652c0978217d4",
+        "type": "mqtt out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_GetLastPos",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ec44ef2c36e5f5b8",
+        "x": 820,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "72bd33bbb30a5494",
+        "type": "mqtt in",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_GetLastPos",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ec44ef2c36e5f5b8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 1140,
+        "wires": [
+            [
+                "fbb463fcb4be87f5"
+            ]
+        ]
+    },
+    {
+        "id": "0e5c76b423de4b48",
+        "type": "mqtt out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_GetHist",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ec44ef2c36e5f5b8",
+        "x": 810,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "76c60430cccef71f",
+        "type": "mqtt in",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_GetHist",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ec44ef2c36e5f5b8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 1220,
+        "wires": [
+            [
+                "151bb1ad86463dee"
+            ]
+        ]
+    },
+    {
+        "id": "2cdb2be2a55a881d",
+        "type": "mqtt in",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_GetPoints",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ec44ef2c36e5f5b8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 1300,
+        "wires": [
+            [
+                "27bf97734351b123"
+            ]
+        ]
+    },
+    {
+        "id": "0b7d75443aa13060",
+        "type": "mqtt out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "topic": "PSA24G2_GetPoints",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ec44ef2c36e5f5b8",
+        "x": 1100,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "1c0635979ca1f305",
+        "type": "websocket out",
+        "z": "ee140812e1840404",
+        "name": "",
+        "server": "74f79175e2e2e8bc",
+        "client": "",
+        "x": 1190,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "09fe1386897a45ea",
+        "type": "mysql",
+        "z": "ee140812e1840404",
+        "mydb": "3f6dc85fcc3ec21d",
+        "name": "MySQL",
+        "x": 1000,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4df02f0f48159815",
+        "type": "mysql",
+        "z": "ee140812e1840404",
+        "mydb": "3f6dc85fcc3ec21d",
+        "name": "MySQL",
+        "x": 980,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "da40df4c9f5d9e23",
+        "type": "mysql",
+        "z": "ee140812e1840404",
+        "mydb": "3f6dc85fcc3ec21d",
+        "name": "MySQL",
+        "x": 1160,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e20f89d9ed8cc61c",
+        "type": "mysql",
+        "z": "ee140812e1840404",
+        "mydb": "3f6dc85fcc3ec21d",
+        "name": "MySQL",
+        "x": 2200,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f5691f17a3a18833",
+        "type": "mysql",
+        "z": "ee140812e1840404",
+        "mydb": "3f6dc85fcc3ec21d",
+        "name": "MySQL",
+        "x": 580,
+        "y": 820,
+        "wires": [
+            [
+                "383652c0978217d4"
+            ]
+        ]
+    },
+    {
+        "id": "dc025423923c9484",
+        "type": "mysql",
+        "z": "ee140812e1840404",
+        "mydb": "3f6dc85fcc3ec21d",
+        "name": "MySQL",
+        "x": 580,
+        "y": 900,
+        "wires": [
+            [
+                "0e5c76b423de4b48"
+            ]
+        ]
+    },
+    {
+        "id": "adacf3c167d4ef52",
+        "type": "mysql",
+        "z": "ee140812e1840404",
+        "mydb": "3f6dc85fcc3ec21d",
+        "name": "MySQL",
+        "x": 720,
+        "y": 980,
+        "wires": [
+            [
+                "7e801c7768d2b102"
+            ]
+        ]
+    },
+    {
+        "id": "f2a1acf19478c020",
+        "type": "debug",
+        "z": "ee140812e1840404",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "60bbe05d290e286c",
+        "type": "debug",
+        "z": "ee140812e1840404",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1900,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "ccd817798aa85350",
+        "type": "debug",
+        "z": "ee140812e1840404",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1940,
+        "y": 580,
+        "wires": []
+    }
+]
