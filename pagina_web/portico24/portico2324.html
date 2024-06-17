@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8"> <!-- Enables usage of special caracters in title -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="portico2324.css"> <!-- Fetches the css file to aply in the document -->
+        <title>Pórtico Cartesiano - PSA 23/24</title>
+        <script src="portico2324.js"></script>
+    </head>
+    <body onload="numberAndRangeSelfUpdate()">
+        <script>
+            window.onload = sendMessage('Get Data')
+            window.onload = sendMessageHist('Get History')
+        </script>
+        <section class="layout">
+            <div class="header dLayout">
+                <div style="width: 60%; float: left;">
+                    <h1>Controlo do pórtico Cartesiano - PSA 2023/2024</h1>
+                </div>
+                <div class="copyrightnote" style="width: 40%; height: 100%; float: right; vertical-align: bottom;">
+                    <p>&copy; 2024 André Ferreira, Inês Santos, Pedro Maia. Todos os direitos reservados.</p>
+                </div>
+            </div>
+            <div class="leftSide dLayout">
+                <div style="height: 25%;">
+                    <h3>Modos de funcionamento</h3>
+                    <ul id="modeList">
+                        <li onclick="changeMode(1)">Send to Position</li>
+                        <li onclick="changeMode(2)">Modo automático</li>
+                    </ul>
+                </div>
+                <div style="height: 75%;">
+                    <img src="portico.jpeg" style="width: 100%; border-radius: 10px; max-height: 100%;" alt="Nós a realizar uma analise ao estado anterior do pórtico">
+                </div>
+            </div>
+            <div class="body dLayout">
+                <h2>Painel de comando</h2>
+                <form id="controlPanel" class="hidden">
+                    <h5>Ponto 1</h5>
+                    <label for="X_range_1">Posição X : </label>
+                    <input type="range" id="X_range_1" name="X_range" min="-150" max="850">
+                    <input type="number" id="X_input_1" name="X_input" placeholder="Enter X" min="-150" max="850">
+                    <br>
+                    <label for="Y_range_1">Posição Y : </label>
+                    <input type="range" id="Y_range_1" name="Y_range" min="-550" max="0">
+                    <input type="number" id="Y_input_1" name="Y_input" placeholder="Enter Y" min="-550" max="0">
+                    <br>
+                    <label for="Z_range_1">Posição Z : </label>
+                    <input type="range" id="Z_range_1" name="Z_range" min="-10000" max="2500">
+                    <input type="number" id="Z_input_1" name="Z_input" placeholder="Enter Z" min="-10000" max="2500">
+                    <br>
+                    <div id="mode2" class="hidden">
+                        <h5>Ponto 2</h5>
+                        <label for="X_range_1">Posição X : </label>
+                        <input type="range" id="X_range_2" name="X_range" min="-150" max="850">
+                        <input type="number" id="X_input_2" name="X_input" placeholder="Enter X" min="-150" max="850">
+                        <br>
+                        <label for="Y_range_1">Posição Y : </label>
+                        <input type="range" id="Y_range_2" name="Y_range" min="-550" max="0">
+                        <input type="number" id="Y_input_2" name="Y_input" placeholder="Enter Y" min="-550" max="0">
+                        <br>
+                        <label for="Z_range_1">Posição Z : </label>
+                        <input type="range" id="Z_range_2" name="Z_range" min="-10000" max="2500">
+                        <input type="number" id="Z_input_2" name="Z_input" placeholder="Enter Z" min="-10000" max="2500">
+                        <br>
+                        <br>
+                        <label for="n_cicles">Numero de ciclos: </label>
+                        <input type="number" id="n_cycles" name="n_cycles" placeholder="Numero" min="1" max="99" value="1">
+                        <br>
+                    </div>
+                    <br>
+                    <input type="button" value="Confirmar" onclick="sendRequest()">
+                    <input type="reset" value="Limpar">
+                    <input type="button" value="Ir para o Zero" onclick="sendZeroMode()">
+                    <input type="button" value="Posição aleatória" onclick="randomizeInputs()">
+                </form>
+                <p id="controlPanelPlaceholder"><b>Clique num modo de funcionamento</b></p>
+                <div class="loading-container hidden" id="loading-container">
+                    <div class="loading"></div>
+                    <div id="loading-text">Aguarde a conclusão do movimento</div>
+                </div>
+            </div>
+            <div class="rightSide dLayout">
+                <div class="stateCurrent">
+                    <h3 style="text-align: center;">Estado do pórtico</h3>             
+                    <p id="state" style="text-align: center;"><b>Estado:</b> Parado</p>
+                </div>
+                <div class="current">
+                    <h4>Ponto Atual: </h4>
+                    <table id="tablePos">
+                        <tr>
+                            <th>X</th>
+                            <th>Y</th>
+                            <th>Z</th>
+                        </tr>
+                        <tr>
+                            <td>Loading</td>
+                            <td>Loading</td>
+                            <td>Loading</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="rightBox dLayout">
+                <h3>Histórico</h3>
+                <div class="histTable">
+                    <table id="tableHist">
+                        <tr>
+                            <th>id</th>
+                            <th>Modo</th>
+                            <th>Data</th>
+                            <th>Estado</th>
+                        </tr>
+                        <tr>
+                            <td>Loading</td>
+                            <td>Loading</td>
+                            <td>Loading</td>
+                            <td>Loading</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="float: right;" id="pagination" class="pagination"></div>
+            </div>
+            <div class="histGraph dLayout">
+                <canvas id="graph"></canvas>
+                <br>
+                <p>Legenda: Vermelho - X, Verde - Y, Azul - Z</p>
+            </div>
+            <div class="footer dLayout">
+                <h4>Acerca do projeto</h4>
+                <p>Este projeto foi realizado com o objetivo de modernizar e melhorar a funcionalidade de um pórtico cartesiano existente no LSFP (Laboratório de Sistemas Flexiveis de Produção).</p>
+                <p>O pórtico cartesiano é uma máquina utilizada em diversas aplicações industriais, caracterizada pelo seu movimento linear em três eixos perpendiculares (X, Y, Z). Este projeto de <i>retrofitting</i> envolveu a realização de novos mecaninsmos de controlo para cada um dos eixos bem como a integração de um sistema de um novo sistema de controlo remoto.</p>
+                <p><b>Objetivos:</b></p>
+                <ul>
+                    <li>Aumentar a precisão e a repetibilidade dos movimentos.</li>
+                    <li>Atualizar o sistema de controlo para um interface mais intuitiva e controlo melhorado.</li>
+                    <li>Incorporar o controlo de todos os eixos através de um PLC e um microcontrolador.</li>
+                    <li>Tornar o pórtico mais conectado ao conceito de IoT</li>
+                </ul>
+                <p><b>Resultados: </b> O pórtico cartesiano encontra-se agora em funcionamento, sem qualquer erro digno de nota e com uma página <i>user-friendly</i> para o controlo e monitorização</p>
+                <p><b>Modo de utilização: </b> Pressione o modo de funcionamento desejado e selecione as coordenadas desejadas. No caso de ser necessária uma recalibração, pode selecionar o botão "Ir para o zero" para recalibrar.</p>
+            </div>
+          </section>
+    </body>
+</html>
