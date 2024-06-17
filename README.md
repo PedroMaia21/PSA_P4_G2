@@ -16,7 +16,9 @@ O objetivo principal deste projeto foi realizar o retrofitting de um pórtico ca
 
 ## Uso
 Conecte todos os componentes conforme descrito na documentação.
+
 Carregue o código no PLC e no microcontrolador. (Apenas é necessário editar o nome da rede de internet a usar e a palavra-passe no microcontrolador)
+
 Acesse a aplicação Web para controlar remotamente o pórtico cartesiano. Garanta que o node-red se encontra a correr.
 
 ### Contacto
