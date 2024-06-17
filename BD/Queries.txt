@@ -1,0 +1,108 @@
+Queries
+
+----- Create schema -----
+
+CREATE SCHEMA psa24g2;
+
+----- Create tables -----
+
+CREATE TABLE psa24g2.request (
+	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	time_r DATETIME NOT NULL DEFAULT NOW(),
+	mode VARCHAR(45) NOT NULL,
+	X1 INT NOT NULL,
+	Y1 INT NOT NULL,
+	Z1 INT NOT NULL,
+	X2 INT,
+	Y2 INT,
+	Z2 INT,
+	cicles INT,
+	state BOOL NOT NULL DEFAULT 0,
+	time_c DATETIME
+);
+
+CREATE TABLE psa24g2.positionX (
+	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	time_p DATETIME NOT NULL DEFAULT NOW(),
+	X INT NOT NULL,
+	request_id INT,
+	FOREIGN KEY (request_id) REFERENCES request (ID)
+);
+
+CREATE TABLE psa24g2.positionYZ (
+	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	time_p DATETIME NOT NULL DEFAULT NOW(),
+	Y INT NOT NULL,
+	Z INT NOT NULL,
+	request_id INT,
+	FOREIGN KEY (request_id) REFERENCES request (ID)
+);
+
+----- Triggers for autoupdating the request id -----
+DELIMITER //
+
+CREATE TRIGGER psa24g2.update_positionx_request_id BEFORE INSERT ON positionx
+FOR EACH ROW
+BEGIN
+    DECLARE last_request_id INT;
+    SELECT MAX(ID) INTO last_request_id FROM request;
+    SET NEW.request_id = last_request_id;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER psa24g2.update_positionyz_request_id BEFORE INSERT ON positionyz
+FOR EACH ROW
+BEGIN
+    DECLARE last_request_id INT;
+    SELECT MAX(ID) INTO last_request_id FROM request;
+    SET NEW.request_id = last_request_id;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER psa24g2.update_timestamp
+BEFORE UPDATE ON request
+FOR EACH ROW
+BEGIN
+    SET NEW.time_c = NOW();
+END;
+//
+
+DELIMITER ;
+
+----- New request -----
+---Modo 0---
+INSERT INTO request (mode,X1,Y1,Z1) VALUES ('Zero',0000,0000,0000);
+---Modo 1---
+INSERT INTO request (mode,X1,Y1,Z1) VALUES ('Position',x,y,z);
+---Modo 2---
+INSERT INTO request (mode,X1,Y1,Z1,X2,Y2,Z2,cicles) VALUES ('Auto',xi,yi,zi,xf,yf,zf,n);
+
+----- New Position -----
+--- X ---
+INSERT INTO positionX (X) VALUES (x);
+--- YZ ---
+INSERT INTO positionYZ (Y,Z) VALUES (y,z);
+
+----- Updated status -----
+UPDATE request 
+SET state=1
+ORDER BY ID DESC LIMIT 1;
+
+---- Select last positions -----
+SELECT X FROM positionx
+ORDER BY ID DESC LIMIT 1;
+
+SELECT Y,Z FROM positionyz
+ORDER BY ID DESC LIMIT 1;
+
+----- Select last requests from N to N+10 -----
+SELECT time_r, mode, state, time_c FROM request 
+ORDER BY ID DESC LIMIT 10 OFFSET n; 
